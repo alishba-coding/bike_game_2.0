@@ -67,3 +67,21 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+# IDE / Editor
+.vscode/
+.vs/
+*.user
+*.suo
+*.sln.docstates
+.idea/
+
+# macOS
+.DS_Store
+
+# SFML assets you don't want tracked (optional, remove if you want assets in repo)
+# assets/
+
+# Game-specific output
+*.save
+*.cfg
