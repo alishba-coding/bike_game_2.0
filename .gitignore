@@ -75,6 +75,7 @@ Testing/
 *.suo
 *.sln.docstates
 .idea/
+header/SFML/
 
 # macOS
 .DS_Store
@@ -85,3 +86,10 @@ Testing/
 # Game-specific output
 *.save
 *.cfg
+
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+*.tmpds
