@@ -1,4 +1,4 @@
-#include "Obstacle.h"
+#include "..\header\obstacle.h"
 #include <iostream>
 
 // Constructor
