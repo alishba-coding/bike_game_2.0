@@ -20,11 +20,11 @@ bool Score::operator>(const Score& other) const {  //merge
     return finalScore > other.finalScore;
 }
 
-
+//probably wouldnt need it bec we have to display entire board using SFML
 ostream& operator<<(ostream& out, const Score& s) {
     out<<left<<setw(15)<<s.playerName  //Name column, 15 char wide, left alined
         <<"  -- " 
         <<right<<setw(6)<<s.finalScore<<" pts\n";  //Score column, 6 char wide, right alined
-    //example Ali - 4000 ptrs
+    //example Ali -- 4000 ptrs
     return out;
 }
