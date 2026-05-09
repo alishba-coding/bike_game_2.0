@@ -1,7 +1,7 @@
 #ifndef OBSTACLE_H
 #define OBSTACLE_H
 
-#include "GameObject.h"  //base class
+#include "../header/GameObject.h"  //base class
 #include <string>
 using namespace std;
 
