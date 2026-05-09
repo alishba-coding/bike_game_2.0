@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <SFML/Graphics.hpp>
 using namespace std;
 
 //this is just declaration of function, note that all of them are void, we will change it as we go
@@ -35,7 +36,11 @@ class obstale : public GameObject{
 
 class bike : public GameObject{
     int speed;
+      sf::Texture bikeTexture;//loads image file
+    sf::Sprite bikeSprite;//displays image
     int pos_b;
+      sf::Clock scoreClock;  
+
     public:
     /*    Bike(){
         position = {100.f, 100.f};
@@ -44,7 +49,7 @@ class bike : public GameObject{
         shape.setFillColor(sf::Color::Green);
         shape.setPosition(position);
     }*/
-    void move();  //key=movement
+
     void speedUp();  //speed+1  (dep on obs)
     //void speedDown();  //speed-1
     void update() override;

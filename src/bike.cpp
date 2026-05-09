@@ -1,13 +1,13 @@
-#include "bike.h"
+#include "..\header\bike.h"
 #include <iostream>
-
+#include <SFML/Window/Keyboard.hpp>
 
 #include <SFML/Graphics.hpp>
 using namespace std;
 
 
     bike::bike (){
-        position = {100.f, 100.f};
+        position = {100.f, 100.f};//same as road
         speed = 60.f;
 
         shape.setSize(sf::Vector2f(40.f, 20.f));
@@ -15,19 +15,17 @@ using namespace std;
         shape.setPosition(position);
     }
 
-    void update::bike() override {
+    void bike::update(){
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-            position.y -= 3;
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
             position.x -= 3;
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
             position.x += 3;
          
 
-        shape.setPosition(position);
+        shape.setPosition(position);//draw again in main 
+
 
         // increase speed every 5 seconds
         if (speedClock.getElapsedTime().asSeconds() > 5.f) {
@@ -37,24 +35,22 @@ using namespace std;
     }
 
 
-    void speedUp ::bike() {
+    void bike::speedUp () {
   
         speed += 20.f;
     }
 
-    void speedDown ::bike(){
+    void bike:: speedDown (){
         if (speed > 20.f)
             speed -= 20.f;
     }
 
-    void draw ::bike(sf::RenderWindow& window) override {
+    void bike:: draw (sf::RenderWindow& window) {
         window.draw(shape);
-    }
+    } 
 
   
-    int score::bike() {
-    float time =   scoreClock.getElapsedTime().asSeconds();
-    return static_cast<int>(time * 1); // score increases with time but only integer
-}
+   
+
 
 
