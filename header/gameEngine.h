@@ -1,7 +1,7 @@
 //GAME ENGINE:handles rendering,interactions and coordinates input
 
-#ifndef GAME_H 
-#define GAME_H
+#ifndef GAMEENGINE_H 
+#define GAMEENGINE_H
 #include<vector>
 #include<memory>//for smart pointers
 #include<optional>//using this for SFML 3
