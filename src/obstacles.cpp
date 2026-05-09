@@ -25,6 +25,7 @@ Obstacle::Obstacle(float x, float y, const string& t) {
     }
 }
 
+//do x lane shift lols
 void Obstacle::update(float gameSpeed) {
     // Move downward based on game speed (Subway Surfers style)
     // x->lane, y-> forward movement, so we update y

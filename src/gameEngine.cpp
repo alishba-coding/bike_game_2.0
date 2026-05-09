@@ -99,3 +99,13 @@ void Game::updateUI() {
     scoreText.setString("Score: " + std::to_string(score));
 }
     
+/*
+Alishba's score used in engine, just a templete for ref for mahnoor
+Score s(player.getName(), survivalTime, gameSpeed);
+
+if (leaderboard.isHighest(s))
+    // show "NEW HIGH SCORE!" 
+
+leaderboard.add(s);
+leaderboard.drawOnWindow(window, font);
+*/

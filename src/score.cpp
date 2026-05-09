@@ -14,8 +14,6 @@ string Score::getName() const {
     return playerName;
 }
 
-
-
 bool Score::operator>(const Score& other) const {  //merge
     return finalScore > other.finalScore;
 }
