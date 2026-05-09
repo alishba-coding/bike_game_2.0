@@ -21,9 +21,6 @@ class Score{
 
     bool operator>(const Score& other) const;  //used in merge sort
 
-    // Overload << so we can do: cout << scoreObj;
-    // or in display(): os << scores[i]
-    // declared as friend so it can access private members
     friend ostream& operator<<(ostream& os, const Score& s);  //display inproper format
 };
 

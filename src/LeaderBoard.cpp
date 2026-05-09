@@ -40,7 +40,7 @@ void Leaderboard::mergeSort(vector<Score>& arr, int left, int right){
 bool Leaderboard::isHighest(const Score& newScore) const{
     if(scores.empty())  return true;  //first element
 
-    return newScore>scores.front();
+    return newScore>scores.front();  //compare it with first element in vector 
 }
 
 void Leaderboard::add(Score newScore){
