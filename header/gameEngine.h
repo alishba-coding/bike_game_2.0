@@ -1,50 +1,40 @@
-//GAME ENGINE:handles rendering,interactions and coordinates input
-
-#ifndef GAMEENGINE_H 
+#ifndef GAMEENGINE_H
 #define GAMEENGINE_H
-#include<vector>
-#include<memory>//for smart pointers
-#include<optional>//using this for SFML 3
-#include  "SFML/Graphics.hpp"
-//game objects
-#include "../header/Player.h"
-#include "../header/Obstacle.h" 
 
+#include <SFML/Graphics.hpp>
+#include <vector>
+#include <memory>//i'm using this for smart pointers
+#include "../header/bike.h"
+#include "../header/obstacle.h"
+#include "../header/LeaderBoard.h"
+#include "../header/Player.h" // Your finalized Player class
 
-using namespace std;
+class GameEngine {
+private:
+    void processEvents();
+    void update(float dt);
+    void render();
+    void spawnObstacle();
+    void handleCollisions();
 
+    sf::RenderWindow window;
+    bool isGameOver;
+    float gameSpeed;
+    sf::Clock spawnClock;
+    sf::Clock gameClock;
 
-class GameEngine{
-        private:
-                sf::RenderWindow window;
-                bool isPaused;
+    // Core Objects
+    std::unique_ptr<Bike> bike;
+    std::unique_ptr<Player> player;
+    std::vector<std::unique_ptr<Obstacle>> obstacles;
+    Leaderboard leaderboard;
 
-                Player myPlayer;
-                vector<std::unique_ptr<Obstacle>> obstacles;
+    sf::Font font;
+    sf::Text scoreText;
 
-                float gameSpeed;
-                int score;
-                sf::Clock game_Clock;
+    public:
+    GameEngine(std::string name);
+    void run();
+};
 
-                //UI elements
-                sf::Font m_font;
-                sf::Text scoreText;
-                sf::Text healthText;
-                  
-                //engine tasks
-                void handleEvents();
-                void update(sf::Time deltaTime);//this will keep movement smmooth with time
-                void detectCollisions();
-
-                void spawnObstacles();
-                void cleanupObstacles();
-                void render();
-                void updateUI();
-        public:
-           GameEngine();
-           void run();    //it will start game and also containns main loop
-           
-          
-        };
-           
-           #endif
+#endif
