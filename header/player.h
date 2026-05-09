@@ -1,19 +1,26 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include<string>
-//#include "../header/Bike.h"
 using namespace std;
-class Player{
-        public:
-                string name;
-                //bike Bike;//Player has a bike
-                int currentLine;//0 is left ,1 is middle ,2 is right
-                
-                Player(string playerName);
-                void controlBike();//handling lane changing
+class Player {
+public:
+    Player(std::string name);//name will input in engine
+    
+    
+    void addScore(int points);//this has our score and also it has coin logic
+    void collectCoin();//this has coins after a certain score you're coins are  added
+    
+    
+    string getName() const;
+    int getCurrentScore() const ;
+    int getCoins() const ;
+    int getHighestScore() const ;
+    void setHighestScore(int HS); //leaderboard updates record
+
+private:
+    string playerName;
+    int score;
+    int coins;
+    int highestScore; // this tells if this score is highest from all scores
 };
 #endif
-                
-                      
-
-           

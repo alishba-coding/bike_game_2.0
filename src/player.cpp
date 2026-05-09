@@ -1,22 +1,43 @@
-#include "Player.h"
+#include "../header/player.h"
 
-Player::Player():name(n),score(0){}
+// this uses the name we took as input
+Player::Player(string name) 
+    : playerName(name), score(0), coins(0), highestScore(0) {}
 
-void Player::handleInput()
-{
-    if(sf::Keyboard::KeyPressed(sf::Keyboard::Left)){
-        playerBike.move(-1.0f);
-    }
-    if(sf::Keyboard::KeyPressed(sf::Keyboard::Right)){
-        playerBike.move(-1.0f);
+  string Player::getName() const {
+    return playerName;
+}
+
+void Player::addScore(int points) {
+    int oldScore = score;
+    score += points;
+
+    
+    //after every 100 points we gain a coin
+    if ((score / 100) > (oldScore / 100)) {
+        int coinsToGain = (score / 100) - (oldScore / 100);
+        for(int i = 0; i < coinsToGain; i++) {
+            collectCoin();
+        }
     }
 }
 
-void Player::update(){
-    //i'll add health logic here later 
-    //it'll be written after obstacle class
+void Player::collectCoin() {
+    coins++;
 }
 
-void Player::render(sf::RenderWindow& window){
-    playerBike.draw(window);
+int Player::getCurrentScore() const {
+    return score;
+}
+
+int Player::getCoins() const {
+    return coins;
+}
+
+int Player::getHighestScore() const {
+    return highestScore;
+}
+
+void Player::setHighestScore(int hs) {
+    highestScore = hs;
 }
