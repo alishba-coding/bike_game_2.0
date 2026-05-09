@@ -3,7 +3,7 @@
 
 #include "GameObject.h"
 using namespace std;
-class bike : public GameObject
+class Bike : public GameObject
 {
 private:
     float speed;
@@ -13,7 +13,7 @@ private:
     sf::Clock speedClock; // timer for speed increase
 
 public:
-    bike()
+    Bike()
     {
     }
 

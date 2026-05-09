@@ -1,12 +1,12 @@
-#include "bike.h"
+#include "../header/bike.h"
 #include <iostream>
-
-
-#include <SFML/Graphics.hpp>
 using namespace std;
 
+#include <SFML/Graphics.hpp>
 
-    bike::bike (){
+
+
+    Bike::Bike () {
         position = {100.f, 100.f};
         speed = 60.f;
 
@@ -15,7 +15,7 @@ using namespace std;
         shape.setPosition(position);
     }
 
-    void update::bike() override {
+    void Bike::update() override {
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
             position.y -= 3;
@@ -37,22 +37,22 @@ using namespace std;
     }
 
 
-    void speedUp ::bike() {
+    void Bike::speedUp() {
   
         speed += 20.f;
     }
 
-    void speedDown ::bike(){
+    void Bike::speedDown(){
         if (speed > 20.f)
             speed -= 20.f;
     }
 
-    void draw ::bike(sf::RenderWindow& window) override {
+    void Bike::draw(sf::RenderWindow& window) override {
         window.draw(shape);
     }
 
   
-    int score::bike() {
+    int Bike::score() {
     float time =   scoreClock.getElapsedTime().asSeconds();
     return static_cast<int>(time * 1); // score increases with time but only integer
 }
