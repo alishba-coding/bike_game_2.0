@@ -14,7 +14,7 @@
 using namespace std;
 
 
-class Game{
+class GameEngine{
         private:
                 sf::RenderWindow window;
                 bool isPaused;
@@ -41,7 +41,7 @@ class Game{
                 void render();
                 void updateUI();
         public:
-           Game();
+           GameEngine();
            void run();    //it will start game and also containns main loop
            
           
