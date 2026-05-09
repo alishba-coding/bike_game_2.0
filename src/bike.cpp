@@ -1,92 +1,59 @@
-<<<<<<< HEAD
-#include "..\header\bike.h"
-#include <iostream>
-#include <SFML/Window/Keyboard.hpp>
-
-#include <SFML/Graphics.hpp>
-=======
 #include "../header/bike.h"
 #include <iostream>
->>>>>>> a208897fe0efde21b0bb85efe30c4835ef8c2fe9
-using namespace std;
 
-#include <SFML/Graphics.hpp>
-
-<<<<<<< HEAD
-    bike::bike (){
-        position = {100.f, 100.f};//same as road
-=======
-
-
-    Bike::Bike () {
-        position = {100.f, 100.f};
->>>>>>> a208897fe0efde21b0bb85efe30c4835ef8c2fe9
-        speed = 60.f;
-
-        shape.setSize(sf::Vector2f(40.f, 20.f));
-        shape.setFillColor(sf::Color::Green);
-        shape.setPosition(position);
+Bike::Bike() : texture(),         // Initialize texture
+      sprite(texture),    // Initialize sprite BY PASSING the texture immediately Sprite (the physical box on your screen) from the Texture (the image file).
+      position(400.f, 500.f), 
+      speed(100.f), 
+      currentLane(1)//initializer list as else compiler was first assigning value to sprite leadinbg to error
+      {
+  
+    if (!texture.loadFromFile("assets/bike.png")) {
+        throw std::runtime_error("Failed to load bike texture");
     }
 
-<<<<<<< HEAD
-    void bike::update(){
-=======
-    void Bike::update() override {
->>>>>>> a208897fe0efde21b0bb85efe30c4835ef8c2fe9
+    sprite.setTexture(texture);//connect them both
 
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
-            position.x -= 3;
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-            position.x += 3;
-         
-
-        shape.setPosition(position);//draw again in main 
+const sf::FloatRect bounds = sprite.getLocalBounds();////////////
+sprite.setOrigin(bounds.size / 2.0f);//set it to center else origin is at 0,0 mean upper left corner
+   
+    sprite.setPosition(position);//place origin at this place
+}
 
 
-        // increase speed every 5 seconds
-        if (speedClock.getElapsedTime().asSeconds() > 5.f) {
-            speedUp();
-            speedClock.restart();
+void Bike::moveLeft() {
+    if (currentLane > 0) currentLane--;
+}
+
+void Bike::moveRight() {
+    if (currentLane < 2) currentLane++;
+}
+/*sf::Event event;
+while (window.pollEvent(event)) {
+    if (event.type == sf::Event::Closed)
+        window.close();
+    if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Key::Left) {
+            bike.moveLeft();
+        }
+        if (event.key.code == sf::Keyboard::Key::Right) {
+            bike.moveRight();
         }
     }
+} in mainnnnn*/
 
-
-<<<<<<< HEAD
-    void bike::speedUp () {
-=======
-    void Bike::speedUp() {
->>>>>>> a208897fe0efde21b0bb85efe30c4835ef8c2fe9
-  
-        speed += 20.f;
-    }
-
-<<<<<<< HEAD
-    void bike:: speedDown (){
-=======
-    void Bike::speedDown(){
->>>>>>> a208897fe0efde21b0bb85efe30c4835ef8c2fe9
-        if (speed > 20.f)
-            speed -= 20.f;
-    }
-
-<<<<<<< HEAD
-    void bike:: draw (sf::RenderWindow& window) {
-=======
-    void Bike::draw(sf::RenderWindow& window) override {
->>>>>>> a208897fe0efde21b0bb85efe30c4835ef8c2fe9
-        window.draw(shape);
-    } 
-
-  
-<<<<<<< HEAD
+void Bike::update(float dt) {
    
+    float targetX = 200.f + (currentLane * 200.f); //just set position of sprite , lane add and minus will be done in main
+    position.x += (targetX - position.x) * 10.f * dt;
+    sprite.setPosition(position);
 
-=======
-    int Bike::score() {
-    float time =   scoreClock.getElapsedTime().asSeconds();
-    return static_cast<int>(time * 1); // score increases with time but only integer
+    if (speedClock.getElapsedTime().asSeconds() > 5.f) {//speed increase with time
+        speed += 20.f;
+        speedClock.restart();
+    }
 }
->>>>>>> a208897fe0efde21b0bb85efe30c4835ef8c2fe9
 
-
+void Bike::draw(sf::RenderWindow& window) {
+    window.draw(sprite);//show the image on the window
+}
