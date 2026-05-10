@@ -21,6 +21,9 @@ class Obstacle: public GameObject{
     void update(float gameSpeed) override;  //makes obstacle down each frame
     void draw(RenderWindow& Window) override;  //shows on screen
 
+    bool isUsingPlaceholder=false;
+    RectangleShape placeholder;
+    
     //helper function
     FloatRect getBounds() const;  //collision detection in Engine
     float getY() const;  //for Cleanup of Obstacle in Engine

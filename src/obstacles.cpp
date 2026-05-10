@@ -1,63 +1,47 @@
-#include "..\header\obstacle.h"
+#include "../header/obstacle.h"
 #include <iostream>
+#include <filesystem>
+using namespace std;
+using namespace sf;
 
-// Constructor
-Obstacle::Obstacle(float x, float y, const string& t) {
-    position = {x, y};
-    type = t;
+Obstacle::Obstacle(int lane, float startY, const string& imagepath)  //lane tells x pos, each child passes own imagePath(.png)
+        : laneNum(lane), texture(), sprite(texture){
 
-    // Basic size
-    shape.setSize(Vector2f(50.f, 50.f));  //size
-    shape.setPosition(position);  //place
+    position = {200.f + (lane * 200.f), startY};  //x position, same as bike; 0lane->200, 1lane->400, 2lane-600
 
-    // Different colors for different obstacles
-    if (type == "rock") {
-        shape.setFillColor(Color::Black);
+    if (!texture.loadFromFile(filesystem::path(imagepath))) { //if the immage isnt working; we use a placeholder
+        cout << "Warning: could not load " << imagepath << ", using placeholder\n";
+        isUsingPlaceholder = true;
+        placeholder.setSize({50.f, 50.f});  //square
+        placeholder.setOrigin({25.f, 25.f});  //center origin
+        placeholder.setPosition(position);  
+        placeholder.setFillColor(Color::Magenta);  //shocking colour so we know something is off
     }
-    else if (type == "car") {
-        shape.setFillColor(Color::Red);
-    }
-    else if (type == "barrier") {
-        shape.setFillColor(Color::Blue);
-    }
-    else {  //we can add unknown obs, like a tree; so if something while pops we know we messed up
-        shape.setFillColor(Color::White); //safety, fallback
-    }
+
+    sprite.setTexture(texture);  //else do the normal immage
+
+    FloatRect bounds = sprite.getLocalBounds();
+    sprite.setOrigin(bounds.size / 2.0f);  //fixing the center of sprite, same as the bike logic
+    sprite.setPosition(position);
 }
 
-//do x lane shift lols
+//called every frame by gameEngine
+//gameSpeed comes from Game — increases over time so game gets harder
 void Obstacle::update(float gameSpeed) {
-    // Move downward based on game speed (Subway Surfers style)
-    // x->lane, y-> forward movement, so we update y
-    position.y += gameSpeed;
-
-    // actual update: sync visual with logic
-    shape.setPosition(position);
+    position.y += gameSpeed;  //big y so screen moves down, obs goes
+    sprite.setPosition(position);  //sync what you see to the logic position
+    if(isUsingPlaceholder)  placeholder.setPosition(position);
 }
 
 void Obstacle::draw(RenderWindow& window) {
-    window.draw(shape);
+    if(isUsingPlaceholder) window.draw(placeholder);
+    else  window.draw(sprite);
 }
 
-/*
-code for mahnoor's guide, used in gameEngine
-void Obstacle::interact(Bike& bike) {
-    if (type == "rock") {
-        std::cout << "Hit rock!" << std::endl;
-        // later: reduce score / slight effect
-    }
-    else if (type == "car") {
-        std::cout << "Hit car!" << std::endl;
-        // stronger penalty later
-    }
-    else if (type == "barrier") {
-        std::cout << "GAME OVER!" << std::endl;
-        // later: trigger game over in Game class
-    }
+FloatRect Obstacle::getBounds() const {  //gives area, uses by gameEngine for collision
+    return sprite.getGlobalBounds();
 }
-*/
 
-FloatRect Obstacle::getBounds() const {
-    //tells area, will need for collision detection; gameEngine
-    return shape.getGlobalBounds();
+float Obstacle::getY() const {  //gameEngine calls this when need to cleanObstacle; so our screen is 600, if y>650 delete obs
+    return position.y;
 }
