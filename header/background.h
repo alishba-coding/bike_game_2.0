@@ -5,14 +5,25 @@
 
 class Background {
 private:
-    sf::Texture sky, hills, road;
-    sf::Sprite  skySprite, hillsSprite, roadSprite;
-    float roadposition, hillsposition;
+    sf::Texture sky, hills, road;//texture before sprite
+
+  
+    sf::Sprite skySprite;
+    sf::Sprite leftHillsSprite, rightHillsSprite;
+    sf::Sprite roadSprite;
+
+   
+    float roadposition = 0.f;
+    float hillsposition = 0.f;
 
 public:
+ 
     Background();
+
+    
     void update(float dt, float bikeSpeed);
+
     void draw(sf::RenderWindow& window);
 };
 
-#endif
+#endif 
