@@ -17,7 +17,7 @@ class Leaderboard {
 
     public:
     void add(Score newScore);  //add+sorts score, remove last element if >10
-    bool isHighest(const Score& newScore) const;  //true if newScore>scores.back()[first score]
+    bool isHighest(const Score& newScore) const;  //true if newScore>scores.front()[first score]
 
     void drawOnWindow(RenderWindow& window, Font& font) const;
 };

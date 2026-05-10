@@ -1,5 +1,5 @@
 #include "../header/score.h"
-#include <iomanip>  //for setw
+#include <iomanip>  
 
 Score::Score(string n, float t, float s)
     : playerName(n), survivalTime(t), lastSpeed(s) {
