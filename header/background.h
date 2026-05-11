@@ -8,7 +8,7 @@ class Background {
 private:
     sf::Texture sky, hills, road;
 
-    sf::Sprite skySprite;       // ✅ no (texture) here
+    sf::Sprite skySprite;       //
     sf::Sprite leftHillsSprite;
     sf::Sprite rightHillsSprite;
     sf::Sprite roadSprite;
