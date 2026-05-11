@@ -176,7 +176,7 @@ void gameEngine::render() {
 
 void gameEngine::resetGame() {
     isGameOver = false;
-    gameSpeed = 100.0f;
+    gameSpeed = 200.0f;
     spawnTimer = 0.0f;
     obstacles.clear();
     string name = player->getName();//same name new bike
