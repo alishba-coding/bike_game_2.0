@@ -101,7 +101,7 @@ void gameEngine::update(float dt) {
     );
 
     // 5. Player Progress & UI
-    player->addScore(static_cast<int>(dt * 15));
+    player->addScore(1);
     scoreText.setString("Score: " + std::to_string(player->getCurrentScore()));
 
     // 6. Difficulty Scaling (Make the game faster over time)
@@ -203,7 +203,7 @@ void gameEngine::drawHealthBar() {
     // Label
     sf::Text hpText(font);
     hpText.setString("HP: " + std::to_string(hp));
-    hpText.setCharacterSize(18);
+    hpText.setCharacterSize(20);
     hpText.setFillColor(sf::Color::White);
     hpText.setPosition({20.f, 44.f});
 
