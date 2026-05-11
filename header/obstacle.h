@@ -42,7 +42,7 @@ public:
     RockObstacle(int lane, float startY)
         : Obstacle(lane, startY, "assets/rock.png") {}
  
-    int getDamage() const override { return 1; }
+    int getDamage() const override { return 2; }
 };
 
 //medium damage
@@ -51,17 +51,21 @@ public:
     BarrierObstacle(int lane, float startY)
         : Obstacle(lane, startY, "assets/barrier.png") {}
  
-    int getDamage() const override { return 2; }
+    int getDamage() const override { return 4; }
 };
 
 //wide so forcing us to change lane
 class TwoLaneBlocker : public Obstacle {
 public:
     TwoLaneBlocker(int lane, float startY)
-        : Obstacle(lane, startY, "assets/blocker.png") {}
- 
-    int getDamage() const override { return 4; }
+        : Obstacle(lane, startY, "assets/blocker.png") {
+        //Shift position to sit between two lanes instead of on one
+        position.x += 66.5f;
+        sprite.setPosition(position);
+    }
+    int getDamage() const override { return 12; }
 };
+
 
 //highest damage
 class CarObstacle : public Obstacle {
@@ -69,7 +73,7 @@ public:
     CarObstacle(int lane, float startY)
         : Obstacle(lane, startY, "assets/car.png") {}
  
-    int getDamage() const override { return 7; }
+    int getDamage() const override { return 8; }
 };
 
 #endif
