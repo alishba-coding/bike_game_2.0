@@ -1,7 +1,5 @@
 # bike_game_2.0
 Game for OOP project
-# bike_game_2.0
-Game for OOP project
 
 OVERVIEW
 A high-speed, 2D endless racer built with C++ and the SFML (Simple and Fast Multimedia Library). 
