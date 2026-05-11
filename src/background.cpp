@@ -18,7 +18,7 @@ Background::Background() : sky(), hills(), road(),
     hills.setRepeated(true);
     road.setRepeated(true);
 
-    skySprite.setTexture(sky);
+    skySprite.setTexture(sky);//set the sprite texture to sky or loaded images
     leftHillsSprite.setTexture(hills);
     rightHillsSprite.setTexture(hills);
     roadSprite.setTexture(road);
@@ -32,7 +32,7 @@ Background::Background() : sky(), hills(), road(),
     roadSprite.setTextureRect(sf::IntRect({0, 0}, {400, 600}));
 } // setTextureRect(sf::IntRect(left, top, width, height))Place/draw the texture over an area of width 800 and height 200.”
 
-void Background::update(float dt, float bikeSpeed)
+/*void Background::update(float dt, float bikeSpeed)
 {
     roadposition += bikeSpeed * dt;         // road will move with same speed as bike
     hillsposition += bikeSpeed * 0.2f * dt; // The hills move at 20% of the bike's speed
@@ -43,9 +43,27 @@ void Background::update(float dt, float bikeSpeed)
 
     if (hillsposition >= static_cast<float>(hills.getSize().y))
         hillsposition -= static_cast<float>(hills.getSize().y);
-    roadSprite.setTextureRect(sf::IntRect({0, (int)roadposition}, {400, 600})); // sky is stationary as it is really far away
+roadSprite.setTextureRect(
+    sf::IntRect({0, -(int)roadposition}, {400, 600})
+);// sky is stationary as it is really far away
     leftHillsSprite.setTextureRect(sf::IntRect({0, (int)hillsposition}, {200, 600}));
     rightHillsSprite.setTextureRect(sf::IntRect({0, (int)hillsposition}, {200, 600}));
+}*/
+void Background::update(float dt, float bikeSpeed)
+{
+    roadposition += bikeSpeed * dt;
+    hillsposition += bikeSpeed * 0.2f * dt;
+
+    // Keep the values within the texture size bounds to prevent overflow
+    if (roadposition >= road.getSize().y) roadposition -= road.getSize().y;
+    if (hillsposition >= hills.getSize().y) hillsposition -= hills.getSize().y;
+
+    // FIX: Use negative hillsposition to move the texture "down"
+    roadSprite.setTextureRect(sf::IntRect({0, -(int)roadposition}, {400, 600}));
+    
+    // Changing this from (int)hillsposition to -(int)hillsposition
+    leftHillsSprite.setTextureRect(sf::IntRect({0, -(int)hillsposition}, {200, 600}));
+    rightHillsSprite.setTextureRect(sf::IntRect({0, -(int)hillsposition}, {200, 600}));
 }
 
 void Background::draw(sf::RenderWindow &window)
