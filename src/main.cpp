@@ -10,7 +10,12 @@ int main() {
     std::cout << "--- Welcome to Bike Race ---" << std::endl;
     std::cout << "Enter your name: ";
     std::getline(std::cin, name);
+<<<<<<< HEAD
     
+=======
+   
+
+>>>>>>> 0bbd4d74ce7ff9747d0d722ceb61856e4504a22f
 
     // this is default name if input is empty
     if (name.empty()) name = "Player 1";
