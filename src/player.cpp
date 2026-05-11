@@ -2,7 +2,7 @@
 
 // this uses the name we took as input
 Player::Player(string name) 
-    : playerName(name), score(0), coins(0), highestScore(0),health(50) {}
+    : playerName(name), score(0), coins(0), highestScore(0),health(100) {}
 
   string Player::getName() const {
     return playerName;
