@@ -60,7 +60,10 @@ void gameEngine::processEvents() {
 }
 
 void gameEngine::update(float dt) {
+    
+    myBackground.update(dt,bike->getSpeed());
     // 1. this will update Bike (smooth lane sliding)
+    
     bike->update(dt);
 
     // 2. this will update Obstacles
@@ -70,6 +73,7 @@ void gameEngine::update(float dt) {
 
     // 3. Cleanup logic using your Obstacle::getY()
     obstacles.erase(
+
         std::remove_if(obstacles.begin(), obstacles.end(),
             [](const std::unique_ptr<Obstacle>& obs) {
                 return obs->getY() > 650.f; 
