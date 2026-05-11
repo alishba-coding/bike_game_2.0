@@ -1,13 +1,12 @@
 #include "../header/background.h"
 #include <iostream>
-Background::Background() :
-    sky(), hills(), road(),
-    skySprite(sky),
-    leftHillsSprite(hills),
-    rightHillsSprite(hills),
-    roadSprite(road),
-    roadposition(0.f),
-    hillsposition(0.f)
+Background::Background() : sky(), hills(), road(),
+                           skySprite(sky),
+                           leftHillsSprite(hills),
+                           rightHillsSprite(hills),
+                           roadSprite(road),
+                           roadposition(0.f),
+                           hillsposition(0.f)
 {
     if (!sky.loadFromFile("assets/sky.png"))
         throw std::runtime_error("Failed to load sky texture");
@@ -19,22 +18,19 @@ Background::Background() :
     hills.setRepeated(true);
     road.setRepeated(true);
 
-    // ✅ Re-bind textures after loadFromFile reallocates memory
     skySprite.setTexture(sky);
     leftHillsSprite.setTexture(hills);
     rightHillsSprite.setTexture(hills);
     roadSprite.setTexture(road);
-
     skySprite.setPosition({0.f, 0.f});
     leftHillsSprite.setPosition({0.f, 0.f});
     rightHillsSprite.setPosition({600.f, 0.f});
     roadSprite.setPosition({200.f, 0.f});
-
     skySprite.setTextureRect(sf::IntRect({0, 0}, {800, 600}));
     leftHillsSprite.setTextureRect(sf::IntRect({0, 0}, {200, 600}));
     rightHillsSprite.setTextureRect(sf::IntRect({0, 0}, {200, 600}));
     roadSprite.setTextureRect(sf::IntRect({0, 0}, {400, 600}));
-}// setTextureRect(sf::IntRect(left, top, width, height))Place/draw the texture over an area of width 800 and height 200.”
+} // setTextureRect(sf::IntRect(left, top, width, height))Place/draw the texture over an area of width 800 and height 200.”
 
 void Background::update(float dt, float bikeSpeed)
 {
@@ -59,5 +55,4 @@ void Background::draw(sf::RenderWindow &window)
     window.draw(leftHillsSprite);
     window.draw(rightHillsSprite);
     window.draw(roadSprite);
-
 }

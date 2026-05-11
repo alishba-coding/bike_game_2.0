@@ -6,7 +6,7 @@ Bike::Bike() :
                sprite(texture),
                position(400.f, 500.f),
                speed(100.f),
-               currentLane(1) // initializer list as else compiler was first assigning value to sprite leadinbg to error
+               currentLane(1) 
 {
 
     if (!texture.loadFromFile("assets/bike.png"))
