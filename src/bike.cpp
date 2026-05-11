@@ -14,7 +14,7 @@ Bike::Bike() :
         throw std::runtime_error("Failed to load bike texture");
     }
      if (sprite.getLocalBounds().size.x == 0) {
-        // This is a safety net: if no image, at least give it a size
+      
         sprite.setTextureRect(sf::IntRect({0, 0}, {50, 100}));
     }
     //sprite.setTexture(texture); // connect them both
@@ -41,7 +41,7 @@ void Bike::moveRight()
 void Bike::update(float dt)
 {
 
-    float targetX = 200.f + (currentLane * 200.f); // just set position of sprite , lane add and minus will be done in main
+    float targetX = 266.f+(currentLane * 133.f); // just set position of sprite , lane add and minus will be done in main
     position.x += (targetX - position.x) * 5.f * dt;
     sprite.setPosition(position);
 
