@@ -23,9 +23,9 @@ private:
     float gameSpeed;
     
     // Clocks for timing
-    sf::Clock spawnClock;
+    
     sf::Clock gameClock;
-
+    
     
     std::unique_ptr<Bike> bike;
     std::unique_ptr<Player> player;
@@ -41,7 +41,7 @@ private:
     void processEvents();       // this handles keyboard input and window close
     void update(float dt);      // this updates positions and logic
     void render();              // this draws everything to the screen
-    void spawnObstacles();       // this gives logic for random obstacle generation
+    void spawnObstacles(sf::Time dt);       // this gives logic for random obstacle generation
     void handleCollisions();    // this checks for hits between bike and obstacles
 
 public:

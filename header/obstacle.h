@@ -8,11 +8,11 @@ using namespace std;
 
 //Obstacle class (base); update and draw here; getDamage in children
 class Obstacle: public GameObject{
-    private:
+    protected://children can see if needed
+    int laneNum;  //0->left, 1->mid, 2->rightint laneNum; 
     Texture texture;
     Sprite sprite;
-    int laneNum;  //0->left, 1->mid, 2->right
-
+    Vector2f position;
     public:
     //constructor
     Obstacle(int lane, float startY, const string& imagePath);

@@ -5,32 +5,35 @@ using namespace std;
 using namespace sf;
 
 Obstacle::Obstacle(int lane, float startY, const string& imagepath)  //lane tells x pos, each child passes own imagePath(.png)
-        : laneNum(lane), texture(), sprite(texture){
+        : laneNum(lane), texture(), sprite(texture)
+        {
 
     position = {200.f + (lane * 200.f), startY};  //x position, same as bike; 0lane->200, 1lane->400, 2lane-600
 
-    if (!texture.loadFromFile(filesystem::path(imagepath))) { //if the immage isnt working; we use a placeholder
-        cout << "Warning: could not load " << imagepath << ", using placeholder\n";
+    cout << "Loading: " << imagepath 
+         << " | CWD: " << std::filesystem::current_path() << "\n"; // ADD THIS
+    
+    if (!texture.loadFromFile(imagepath)) { //if the immage isnt working; we use a placeholder
+        cout << "Warning: could not load " << imagepath << "\n";
         isUsingPlaceholder = true;
-        placeholder.setSize({50.f, 50.f});  //square
-        placeholder.setOrigin({25.f, 25.f});  //center origin
-        placeholder.setPosition(position);  
-        placeholder.setFillColor(Color::Magenta);  //shocking colour so we know something is off
+        placeholder.setSize({50.f, 50.f});
+        placeholder.setOrigin({25.f, 25.f});
+        placeholder.setPosition(position);
+        placeholder.setFillColor(Color::Magenta);
+    } else{
+        sprite.setTexture(texture,true);  //calls setTexture explicitly
+        FloatRect bounds = sprite.getLocalBounds();
+        sprite.setOrigin({bounds.size.x/ 2.0f, bounds.size.y / 2.0f});  //fixing the center of sprite, same as the bike logic
+        sprite.setPosition(position);
     }
-
-    sprite.setTexture(texture);  //else do the normal immage
-
-    FloatRect bounds = sprite.getLocalBounds();
-    sprite.setOrigin(bounds.size / 2.0f);  //fixing the center of sprite, same as the bike logic
-    sprite.setPosition(position);
 }
 
 //called every frame by gameEngine
 //gameSpeed comes from Game — increases over time so game gets harder
-void Obstacle::update(float gameSpeed) {
-    position.y += gameSpeed;  //big y so screen moves down, obs goes
+void Obstacle::update(float movementAmount) {
+    position.y += movementAmount;  //big y so screen moves down, obs goes
     sprite.setPosition(position);  //sync what you see to the logic position
-    if(isUsingPlaceholder)  placeholder.setPosition(position);
+    if(isUsingPlaceholder) { placeholder.setPosition(position);}
 }
 
 void Obstacle::draw(RenderWindow& window) {
@@ -39,6 +42,9 @@ void Obstacle::draw(RenderWindow& window) {
 }
 
 FloatRect Obstacle::getBounds() const {  //gives area, uses by gameEngine for collision
+    if(isUsingPlaceholder)
+    return placeholder.getGlobalBounds();
+    else
     return sprite.getGlobalBounds();
 }
 
