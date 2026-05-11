@@ -2,7 +2,8 @@
 #include <iostream>
 
 Bike::Bike() : 
-               sprite(texture), // Initialize sprite BY PASSING the texture immediately Sprite (the physical box on your screen) from the Texture (the image file).
+               texture(),
+               sprite(texture),
                position(400.f, 500.f),
                speed(100.f),
                currentLane(1) // initializer list as else compiler was first assigning value to sprite leadinbg to error
@@ -12,11 +13,14 @@ Bike::Bike() :
     {
         throw std::runtime_error("Failed to load bike texture");
     }
+     if (sprite.getLocalBounds().size.x == 0) {
+        // This is a safety net: if no image, at least give it a size
+        sprite.setTextureRect(sf::IntRect({0, 0}, {50, 100}));
+    }
+    //sprite.setTexture(texture); // connect them both
 
-    sprite.setTexture(texture); // connect them both
-
-    sf::FloatRect bounds = sprite.getLocalBounds(); 
-    sprite.setOrigin(bounds.size / 2.0f);                 // set it to center else origin is at 0,0 mean upper left corner
+    const sf::FloatRect bounds = sprite.getLocalBounds(); 
+    sprite.setOrigin({bounds.size.x / 2.0f, bounds.size.y / 2.0f});                 // set it to center else origin is at 0,0 mean upper left corner
 
     sprite.setPosition(position); // place origin at this place
 }
