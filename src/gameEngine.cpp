@@ -58,38 +58,52 @@ void gameEngine::processEvents() {
         }
     }
 }
-
 void gameEngine::update(float dt) {
-    
-    myBackground.update(dt,bike->getSpeed());
-    // 1. this will update Bike (smooth lane sliding)
-    
+    if (isGameOver) return;
+
+    // 1. Update World & Bike
+    myBackground.update(dt, bike->getSpeed());
     bike->update(dt);
 
-    // 2. this will update Obstacles
-    for (auto& obs : obstacles) {
-        obs->update(gameSpeed * dt);
+    // 2. Obstacle Spawning Logic (THE MISSING PIECE)
+    // Ensure 'spawnTimer' is a float in your gameEngine.h
+    spawnTimer += dt;
+    float currentSpawnRate = 1.8f; // Adjust this for difficulty (lower = harder)
+    
+    if (spawnTimer >= currentSpawnRate) {
+        spawnObstacles(); // This adds a new obstacle to your vector
+        spawnTimer = 0.0f;
     }
 
-    // 3. Cleanup logic using your Obstacle::getY()
-    obstacles.erase(
+    // 3. Update Obstacles and Check for Collisions
+    for (auto& obs : obstacles) {
+        // Move them down
+        obs->update(gameSpeed * dt);
 
+        // Collision Check: Using SFML 3.0 findIntersection
+        // Note: Make sure getBounds() returns a FloatRect in your classes
+        if (bike->getBounds().findIntersection(obs->getBounds())) {
+            std::cout << "Collision Detected!" << std::endl;
+            isGameOver = true; 
+        }
+    }
+
+    // 4. Cleanup Logic (Remove obstacles that passed the bottom)
+    obstacles.erase(
         std::remove_if(obstacles.begin(), obstacles.end(),
             [](const std::unique_ptr<Obstacle>& obs) {
-                return obs->getY() > 650.f; 
+                return obs->getY() > 800.f; // Use your actual window height
             }),
         obstacles.end()
     );
 
-    // 4. this has player progress and score
+    // 5. Player Progress & UI
     player->addScore(static_cast<int>(dt * 15));
     scoreText.setString("Score: " + std::to_string(player->getCurrentScore()));
 
-    // 5. this is doing difficulty scaling
+    // 6. Difficulty Scaling (Make the game faster over time)
     gameSpeed += 5.0f * dt;
 }
-
-
 void gameEngine::handleCollisions() {
     sf::FloatRect bikeBounds = bike->getBounds();
 

@@ -32,11 +32,11 @@ private:
     std::vector<std::unique_ptr<Obstacle>> obstacles;
     Background myBackground;
     Leaderboard leaderboard;
-
+    float spawnTimer =0.0f;
     // UI Elements
     sf::Font font;
     sf::Text scoreText;
-
+    
     
     void processEvents();       // this handles keyboard input and window close
     void update(float dt);      // this updates positions and logic
