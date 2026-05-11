@@ -1,4 +1,3 @@
-
 #include "../header/gameEngine.h"
 #include <iostream>
 #include <random>
@@ -50,7 +49,15 @@ void gameEngine::processEvents() {
         }
 
         if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
-            
+            if(isGameOver) {
+                if (keyPressed->code == sf::Keyboard::Key::Enter){
+                    resetGame();
+                }
+                if(keyPressed->code == sf::Keyboard::Key::Escape){
+                    window.close();
+                }
+                return;
+            }
             if (keyPressed->code == sf::Keyboard::Key::Left || keyPressed->code == sf::Keyboard::Key::A) {
                 bike->moveLeft();
             }
@@ -76,8 +83,7 @@ void gameEngine::update(float dt) {
     if (spawnTimer >= currentSpawnRate) {
         spawnObstacles(sf::seconds(spawnTimer)); // This adds a new obstacle to your vector
         spawnTimer = 0.0f;
-    } // in update(), after spawnObstacles call
-    std::cout << "Obstacle count: " << obstacles.size() << std::endl;
+    } 
 
     // 3. Update Obstacles and Check for Collisions
     for (auto& obs : obstacles) {
@@ -106,23 +112,29 @@ void gameEngine::handleCollisions() {
     if(isGameOver) return;
     sf::FloatRect bikeBounds = bike->getBounds();
 
-    for (auto& obs : obstacles) {
-        if (bikeBounds.findIntersection(obs->getBounds())) {
+    for (auto it =obstacles.begin(); it != obstacles.end();) {
+        if (bikeBounds.findIntersection((*it)->getBounds())) {
+            player->takeDamage((*it)->getDamage());
+            it = obstacles.erase(it);
+
+            if (!player->isAlive()) {
             isGameOver = true;
-            
             std::string n = player->getName();
             float t = static_cast<float>(gameClock.getElapsedTime().asSeconds());
             float s = static_cast<float>(gameSpeed);
             int c = player->getCoins(); 
-
             Score finalScore(n, t, s, c);
             
             leaderboard.add(finalScore);
-            std::cout << "Crash! Final Score: " << finalScore.getScore() << " | Coins: " << c << std::endl;
+            std::cout << "Game Over! HP:0 | Score:  " << finalScore.getScore() << " | Coins: " << c << std::endl;
             
             break; 
         }
+
+    }else {
+        ++it;
     }
+  }
 }
 
 void gameEngine::spawnObstacles(sf::Time dt) {
@@ -137,8 +149,10 @@ void gameEngine::spawnObstacles(sf::Time dt) {
         obstacles.push_back(std::make_unique<RockObstacle>(randomLane, startY));
     } else if (randomType == 2) {
         obstacles.push_back(std::make_unique<BarrierObstacle>(randomLane, startY));
-    } else {
-        obstacles.push_back(std::make_unique<TwoLaneBlocker>(randomLane, startY));
+    } else {  //we change this 
+        int blockerLane = rand() % 2; // 0 or 1 only
+        float blockerX = (blockerLane == 0) ? 333.f : 466.f; // midpoint between lane pairs
+        obstacles.push_back(std::make_unique<TwoLaneBlocker>(blockerLane, startY));
     }
 }
 
@@ -151,10 +165,84 @@ void gameEngine::render() {
 
     bike->draw(window);
     window.draw(scoreText);
+    drawHealthBar(); 
 
     if (isGameOver) {
-        leaderboard.drawOnWindow(window, font); // this has leaderboard.cpp logic
+        drawGameOver();
     }
 
     window.display();
+}
+
+void gameEngine::resetGame() {
+    isGameOver = false;
+    gameSpeed = 100.0f;
+    spawnTimer = 0.0f;
+    obstacles.clear();
+    string name = player->getName();//same name new bike
+    bike = std::make_unique<Bike>();
+    player = std::make_unique<Player>(name);
+    gameClock.restart();//restart clock
+
+}
+
+
+void gameEngine::drawHealthBar() {
+    int hp = player->getHealth();  // 0–100
+
+    // Background (red = missing health)
+    sf::RectangleShape bgBar({200.f, 20.f});
+    bgBar.setFillColor(sf::Color(180, 0, 0));
+    bgBar.setPosition({20.f, 20.f});
+
+    // Foreground (green = current health)
+    sf::RectangleShape fgBar({200.f * (hp / 100.f), 20.f});
+    fgBar.setFillColor(sf::Color(0, 200, 0));
+    fgBar.setPosition({20.f, 20.f});
+
+    // Label
+    sf::Text hpText(font);
+    hpText.setString("HP: " + std::to_string(hp));
+    hpText.setCharacterSize(18);
+    hpText.setFillColor(sf::Color::White);
+    hpText.setPosition({20.f, 44.f});
+
+    window.draw(bgBar);
+    window.draw(fgBar);
+    window.draw(hpText);
+}
+
+void gameEngine::drawGameOver() {
+    // Semi-transparent dark overlay
+    sf::RectangleShape overlay({800.f, 600.f});
+    overlay.setFillColor(sf::Color(0, 0, 0, 170));  // black, 170/255 opacity
+    overlay.setPosition({0.f, 0.f});
+    window.draw(overlay);
+
+    // "GAME OVER" title
+    sf::Text title(font);
+    title.setString("GAME OVER");
+    title.setCharacterSize(48);
+    title.setFillColor(sf::Color::Red);
+    title.setPosition({240.f, 30.f});
+    window.draw(title);
+
+    // Leaderboard header
+    sf::Text header(font);
+    header.setString("--- Leaderboard ---");
+    header.setCharacterSize(28);
+    header.setFillColor(sf::Color::Yellow);
+    header.setPosition({260.f, 100.f});
+    window.draw(header);
+
+    // Scores (drawn by leaderboard)
+    leaderboard.drawOnWindow(window, font);
+
+    // Restart prompt
+    sf::Text restartText(font);
+    restartText.setString("Press R to Restart   |   Esc to Quit");
+    restartText.setCharacterSize(22);
+    restartText.setFillColor(sf::Color::White);
+    restartText.setPosition({200.f, 530.f});
+    window.draw(restartText);
 }
