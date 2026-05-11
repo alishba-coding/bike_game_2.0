@@ -36,28 +36,16 @@ void Bike::moveRight()
     if (currentLane < 2)
         currentLane++;
 }
-/*sf::Event event;
-while (window.pollEvent(event)) {
-    if (event.type == sf::Event::Closed)
-        window.close();
-    if (event.type == sf::Event::KeyPressed) {
-        if (event.key.code == sf::Keyboard::Key::Left) {
-            bike.moveLeft();
-        }
-        if (event.key.code == sf::Keyboard::Key::Right) {
-            bike.moveRight();
-        }
-    }
-} in mainnnnn*/
+
 
 void Bike::update(float dt)
 {
 
     float targetX = 200.f + (currentLane * 200.f); // just set position of sprite , lane add and minus will be done in main
-    position.x += (targetX - position.x) * 10.f * dt;
+    position.x += (targetX - position.x) * 5.f * dt;
     sprite.setPosition(position);
 
-    if (speedClock.getElapsedTime().asSeconds() > 5.f)
+    if (speedClock.getElapsedTime().asSeconds() > 5.f)  
     { // speed increase with time
         speed += 20.f;
         speedClock.restart();

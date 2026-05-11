@@ -2,7 +2,7 @@
 #include <iostream>
 Background::Background() :
     sky(), hills(), road(),
-    skySprite(sky),           //
+    skySprite(sky),
     leftHillsSprite(hills),
     rightHillsSprite(hills),
     roadSprite(road),
@@ -18,6 +18,12 @@ Background::Background() :
 
     hills.setRepeated(true);
     road.setRepeated(true);
+
+    // ✅ Re-bind textures after loadFromFile reallocates memory
+    skySprite.setTexture(sky);
+    leftHillsSprite.setTexture(hills);
+    rightHillsSprite.setTexture(hills);
+    roadSprite.setTexture(road);
 
     skySprite.setPosition({0.f, 0.f});
     leftHillsSprite.setPosition({0.f, 0.f});
@@ -53,4 +59,5 @@ void Background::draw(sf::RenderWindow &window)
     window.draw(leftHillsSprite);
     window.draw(rightHillsSprite);
     window.draw(roadSprite);
+
 }

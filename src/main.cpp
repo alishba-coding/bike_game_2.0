@@ -9,6 +9,19 @@ int main() {
     std::cout << "--- Welcome to Bike Race ---" << std::endl;
     std::cout << "Enter your name: ";
     std::getline(std::cin, name);
+    /*sf::Event event;
+while (window.pollEvent(event)) {
+    if (event.type == sf::Event::Closed)
+        window.close();
+    if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Key::Left) {
+            bike.moveLeft();
+        }
+        if (event.key.code == sf::Keyboard::Key::Right) {
+            bike.moveRight();
+        }
+    }
+}*/
 
     // this is default name if input is empty
     if (name.empty()) name = "Player 1";
