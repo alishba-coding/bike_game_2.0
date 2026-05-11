@@ -57,13 +57,15 @@ void Leaderboard::drawOnWindow(RenderWindow& window, Font& font) const {  //we d
     for (int i = 0; i < (int)scores.size(); i++) {
         Text nameText(font);
         nameText.setString(to_string(i+1) + ". " + scores[i].getName());
-        nameText.setPosition({200.f, startY+i*40.f});  //y shifts down per row; y=100->140->180...
-        nameText.setCharacterSize(24);  //font size
+        nameText.setPosition({200.f, startY+i*38.f});  //y shifts down per row; y=100->140->180...
+        nameText.setCharacterSize(22);  //font size
 
         Text scoreText(font);  //pass font at construction
         scoreText.setString(to_string(scores[i].getScore()) + " pts");
-        scoreText.setPosition({500.f, startY + i * 40.f});
-        scoreText.setCharacterSize(24); 
+        scoreText.setPosition({530.f, startY + i * 38.f});
+        scoreText.setCharacterSize(22); 
+        scoreText.setFillColor(i==0?Color::Yellow :Color::White);
+
         
         window.draw(nameText);
         window.draw(scoreText);

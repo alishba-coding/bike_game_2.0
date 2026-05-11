@@ -43,7 +43,9 @@ private:
     void render();              // this draws everything to the screen
     void spawnObstacles(sf::Time dt);       // this gives logic for random obstacle generation
     void handleCollisions();    // this checks for hits between bike and obstacles
-
+    void resetGame();
+    void drawGameOver();
+    void drawHealthBar();
 public:
     
     gameEngine(std::string name);//constructor will take player name as input

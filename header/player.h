@@ -16,11 +16,15 @@ public:
     int getCoins() const ;
     int getHighestScore() const ;
     void setHighestScore(int HS); //leaderboard updates record
+    void takeDamage(int amount);
+    int getHealth() const;
+    bool isAlive() const;
 
 private:
     string playerName;
     int score;
     int coins;
     int highestScore; // this tells if this score is highest from all scores
+    int health;
 };
 #endif

@@ -3,7 +3,7 @@
 
 Score::Score(string n, float t, float s,int c)
     : playerName(n), survivalTime(t), lastSpeed(s),coinsEarned(c){
-    finalScore = static_cast<int>(t * s);  //doing it in int bec we dont want decimal
+    finalScore = static_cast<int>((t*10) * (c*50));  //doing it in int bec we dont want decimal
 }
 
 int Score::getScore() const {

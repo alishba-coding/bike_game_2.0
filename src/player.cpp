@@ -2,7 +2,7 @@
 
 // this uses the name we took as input
 Player::Player(string name) 
-    : playerName(name), score(0), coins(0), highestScore(0) {}
+    : playerName(name), score(0), coins(0), highestScore(0),health(100) {}
 
   string Player::getName() const {
     return playerName;
@@ -40,4 +40,19 @@ int Player::getHighestScore() const {
 
 void Player::setHighestScore(int hs) {
     highestScore = hs;
+}
+
+void Player::takeDamage(int amount) {
+    health -= amount;
+    if (health < 0) {
+        health = 0;
+    }
+}
+
+int Player::getHealth() const {
+    return health;
+}
+
+bool Player::isAlive() const {
+    return health > 0;
 }
