@@ -5,7 +5,7 @@ Bike::Bike() :
                texture(),
                sprite(texture),
                position(400.f, 500.f),
-               speed(100.f),
+               speed(200.f),
                currentLane(1) 
 {
 
@@ -45,7 +45,7 @@ void Bike::update(float dt)
     position.x += (targetX - position.x) * 5.f * dt;
     sprite.setPosition(position);
 
-    if (speedClock.getElapsedTime().asSeconds() > 5.f)  
+    if (speedClock.getElapsedTime().asSeconds() > 3.f)  
     { // speed increase with time
         speed += 20.f;
         speedClock.restart();
