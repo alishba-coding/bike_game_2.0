@@ -41,7 +41,7 @@ private:
     void processEvents();       // this handles keyboard input and window close
     void update(float dt);      // this updates positions and logic
     void render();              // this draws everything to the screen
-    void spawnObstacle();       // this gives logic for random obstacle generation
+    void spawnObstacles();       // this gives logic for random obstacle generation
     void handleCollisions();    // this checks for hits between bike and obstacles
 
 public:

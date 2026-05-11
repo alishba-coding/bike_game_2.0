@@ -1,7 +1,7 @@
 #include "../header/bike.h"
 #include <iostream>
 
-Bike::Bike() : texture(),       // Initialize texture
+Bike::Bike() : 
                sprite(texture), // Initialize sprite BY PASSING the texture immediately Sprite (the physical box on your screen) from the Texture (the image file).
                position(400.f, 500.f),
                speed(100.f),
@@ -15,7 +15,7 @@ Bike::Bike() : texture(),       // Initialize texture
 
     sprite.setTexture(texture); // connect them both
 
-    const sf::FloatRect bounds = sprite.getLocalBounds(); 
+    sf::FloatRect bounds = sprite.getLocalBounds(); 
     sprite.setOrigin(bounds.size / 2.0f);                 // set it to center else origin is at 0,0 mean upper left corner
 
     sprite.setPosition(position); // place origin at this place

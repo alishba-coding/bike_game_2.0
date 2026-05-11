@@ -114,21 +114,22 @@ void gameEngine::handleCollisions() {
 
 void gameEngine::spawnObstacles() {
     int randomType = rand() % 4; // Generates 0, 1, 2, or 3
-
+     int randomLane = rand()%3;
+     float startY=-100.0f;
     if (randomType == 0) {
-        obstacles.push_back(std::make_unique<CarObstacle>());
+        obstacles.push_back(std::make_unique<CarObstacle>(randomLane, startY));
     } else if (randomType == 1) {
-        obstacles.push_back(std::make_unique<RockObstacle>());
+        obstacles.push_back(std::make_unique<RockObstacle>(randomLane, startY));
     } else if (randomType == 2) {
-        obstacles.push_back(std::make_unique<BarrierObstacle>());
+        obstacles.push_back(std::make_unique<BarrierObstacle>(randomLane, startY));
     } else {
-        obstacles.push_back(std::make_unique<TwoLaneBlocker>());
+        obstacles.push_back(std::make_unique<TwoLaneBlocker>(randomLane, startY));
     }
 }
 
 void gameEngine::render() {
     window.clear(sf::Color(135, 206, 235)); //  Sky Blue 
-
+    myBackground.draw(window);//this draws background
     for (auto& obs : obstacles) {
         obs->draw(window);
     }
