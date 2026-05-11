@@ -1,3 +1,4 @@
+
 #ifndef BACKGROUND_H
 #define BACKGROUND_H
 
@@ -5,24 +6,19 @@
 
 class Background {
 private:
-    sf::Texture sky, hills, road;//texture before sprite
+    sf::Texture sky, hills, road;
 
-  
-    sf::Sprite skySprite;
-    sf::Sprite leftHillsSprite, rightHillsSprite;
+    sf::Sprite skySprite;       // ✅ no (texture) here
+    sf::Sprite leftHillsSprite;
+    sf::Sprite rightHillsSprite;
     sf::Sprite roadSprite;
 
-   
     float roadposition = 0.f;
     float hillsposition = 0.f;
 
 public:
- 
     Background();
-
-    
     void update(float dt, float bikeSpeed);
-
     void draw(sf::RenderWindow& window);
 };
 

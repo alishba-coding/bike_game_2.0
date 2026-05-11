@@ -1,37 +1,34 @@
 #include "../header/background.h"
 #include <iostream>
-
-Background::Background()
-    : roadposition(0.f), hillsposition(0.f), skySprite(sky), // must be intialized cant be empty
-      leftHillsSprite(hills),
-      rightHillsSprite(hills),
-      roadSprite(road)
+Background::Background() :
+    sky(), hills(), road(),
+    skySprite(sky),           //
+    leftHillsSprite(hills),
+    rightHillsSprite(hills),
+    roadSprite(road),
+    roadposition(0.f),
+    hillsposition(0.f)
 {
     if (!sky.loadFromFile("assets/sky.png"))
-        std::cout << "Sky failed\n";
-
+        throw std::runtime_error("Failed to load sky texture");
     if (!hills.loadFromFile("assets/hills.png"))
-        std::cout << "Hills failed\n";
-
+        throw std::runtime_error("Failed to load hills texture");
     if (!road.loadFromFile("assets/road.png"))
-        std::cout << "Road failed\n";
+        throw std::runtime_error("Failed to load road texture");
+
+    hills.setRepeated(true);
+    road.setRepeated(true);
 
     skySprite.setPosition({0.f, 0.f});
-    skySprite.setTexture(sky);
-    leftHillsSprite.setTexture(hills);
-    rightHillsSprite.setTexture(hills);
-    roadSprite.setTexture(road);
+    leftHillsSprite.setPosition({0.f, 0.f});
+    rightHillsSprite.setPosition({600.f, 0.f});
+    roadSprite.setPosition({200.f, 0.f});
 
-    hills.setRepeated(true); // in y axis first sky then hill then road
-
-    road.setRepeated(true); // if greater than size than it will keep copying the image till you reach the requirement
-
-    roadSprite.setPosition(sf::Vector2f(200.f, 0.f));
-
-    leftHillsSprite.setPosition(sf::Vector2f(0.f, 0.f));
-
-    rightHillsSprite.setPosition(sf::Vector2f(600.f, 0.f));
-} // setTextureRect(sf::IntRect(left, top, width, height))Place/draw the texture over an area of width 800 and height 200.”
+    skySprite.setTextureRect(sf::IntRect({0, 0}, {800, 600}));
+    leftHillsSprite.setTextureRect(sf::IntRect({0, 0}, {200, 600}));
+    rightHillsSprite.setTextureRect(sf::IntRect({0, 0}, {200, 600}));
+    roadSprite.setTextureRect(sf::IntRect({0, 0}, {400, 600}));
+}// setTextureRect(sf::IntRect(left, top, width, height))Place/draw the texture over an area of width 800 and height 200.”
 
 void Background::update(float dt, float bikeSpeed)
 {
