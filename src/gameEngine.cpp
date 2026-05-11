@@ -84,8 +84,7 @@ void gameEngine::update(float dt) {
     if (spawnTimer >= currentSpawnRate) {
         spawnObstacles(sf::seconds(spawnTimer)); // This adds a new obstacle to your vector
         spawnTimer = 0.0f;
-    } // in update(), after spawnObstacles call
-    std::cout << "Obstacle count: " << obstacles.size() << std::endl;
+    } 
 
     // 3. Update Obstacles and Check for Collisions
     for (auto& obs : obstacles) {
@@ -152,7 +151,7 @@ void gameEngine::spawnObstacles(sf::Time dt) {
     } else if (randomType == 2) {
         obstacles.push_back(std::make_unique<BarrierObstacle>(randomLane, startY));
     } else {
-        obstacles.push_back(std::make_unique<TwoLaneBlocker>(randomLane, startY));
+        obstacles.push_back(std::make_unique<TwoLaneBlocker>(1, startY)); //always center lane
     }
 }
 

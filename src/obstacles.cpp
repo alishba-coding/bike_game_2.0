@@ -8,10 +8,7 @@ Obstacle::Obstacle(int lane, float startY, const string& imagepath)  //lane tell
         : laneNum(lane), texture(), sprite(texture)
         {
 
-    position = {200.f + (lane * 200.f), startY};  //x position, same as bike; 0lane->200, 1lane->400, 2lane-600
-
-    cout << "Loading: " << imagepath 
-         << " | CWD: " << std::filesystem::current_path() << "\n"; // ADD THIS
+    position = {266.f + (lane * 133.f), startY};
     
     if (!texture.loadFromFile(imagepath)) { //if the immage isnt working; we use a placeholder
         cout << "Warning: could not load " << imagepath << "\n";
