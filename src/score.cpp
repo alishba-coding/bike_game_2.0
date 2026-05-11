@@ -1,8 +1,8 @@
 #include "../header/score.h"
-#include <iomanip>  
+#include <iomanip>  //for setw
 
-Score::Score(string n, float t, float s)
-    : playerName(n), survivalTime(t), lastSpeed(s) {
+Score::Score(string n, float t, float s,int c)
+    : playerName(n), survivalTime(t), lastSpeed(s),coinsEarned(c){
     finalScore = static_cast<int>(t * s);  //doing it in int bec we dont want decimal
 }
 
@@ -12,6 +12,10 @@ int Score::getScore() const {
 
 string Score::getName() const {
     return playerName;
+}
+
+int Score::getCoins() const {
+    return coinsEarned;
 }
 
 bool Score::operator>(const Score& other) const {  //merge

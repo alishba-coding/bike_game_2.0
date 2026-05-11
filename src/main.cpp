@@ -15,7 +15,7 @@ int main() {
 
     try {
         // 2. this initializes the engine with the name
-        GameEngine engine(name);
+        gameEngine engine(name);
 
         // 3. this starts the game loop
         engine.run();

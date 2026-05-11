@@ -1,111 +1,144 @@
 #include "../header/gameEngine.h"
-#include<iostream>
-using namespace std;
+#include <iostream>
+#include <random>
 
-Game::Game()
- :window(sf::VideoMode({800,600}),"Bike Game"),
-    myPlayer("player1"),
-    isPaused(false),
-    gameSpeed(200.0f),
-    score(0)
+// Constructor
+gameEngine::gameEngine(std::string name)
+    : window(sf::VideoMode({800, 600}), " Bike Race"),
+      isGameOver(false),
+      gameSpeed(200.0f),
+      scoreText(font)
 {
-//for loading font
-  window.setFramerateLimit(60);
+    // this initializes the objects
+    bike = std::make_unique<Bike>();
+    player = std::make_unique<Player>(name);
+    
+    window.setFramerateLimit(60);
+
+    if (!font.openFromFile("assets/font.ttf")) {
+        std::cout << "Error: Place font.ttf in assets folder!\n";
+    }
+
+    
+    scoreText.setCharacterSize(24);
+    scoreText.setFillColor(sf::Color::White);
+    scoreText.setPosition({620.f, 20.f}); 
 }
 
-void Game::run() {
+void gameEngine::run() {
     sf::Clock clock;
-    while (window.isOpen()){
+    while (window.isOpen()) {
         sf::Time deltaTime = clock.restart();
 
-        handleEvents();
+        processEvents();      // this handles keyboard input and window close
 
-        if(!isPaused)
-        {
-            update(deltaTime);
-            detectCollisions();
+        if (!isGameOver) {
+            update(deltaTime.asSeconds());
+            handleCollisions();
             spawnObstacles();
-            cleanupObstacles();
         }
         render();
-        
     }
 }
 
-void Game::handleEvents() {
-    while(const std::optional event =window.pollEvent()) 
-     {
-        if(event->is<sf::Event::Closed>()) {
+void gameEngine::processEvents() {
+    while (const std::optional event = window.pollEvent()) {
+        if (event->is<sf::Event::Closed>()) {
             window.close();
-        } 
-    
-    if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
-            if (keyPressed->code == sf::Keyboard::Key::Escape) {
-                isPaused = !isPaused; // Toggle pause
+        }
+
+        if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
+            
+            if (keyPressed->code == sf::Keyboard::Key::Left || keyPressed->code == sf::Keyboard::Key::A) {
+                bike->moveLeft();
+            }
+            if (keyPressed->code == sf::Keyboard::Key::Right || keyPressed->code == sf::Keyboard::Key::D) {
+                bike->moveRight();
             }
         }
     }
 }
 
-void Game::update(sf::Time deltaTime) {
-    float dt = deltaTime.asSeconds();
-    
-    // Update score based on time survived
-    score += static_cast<int>(dt * 10);
-    updateUI();
+void gameEngine::update(float dt) {
+    // 1. this will update Bike (smooth lane sliding)
+    bike->update(dt);
 
-    // Tell each obstacle to move down the screen
+    // 2. this will update Obstacles
     for (auto& obs : obstacles) {
         obs->update(gameSpeed * dt);
     }
 
-    //  this will deal with the lane switching)
-    myPlayer.controlBike();
+    // 3. Cleanup logic using your Obstacle::getY()
+    obstacles.erase(
+        std::remove_if(obstacles.begin(), obstacles.end(),
+            [](const std::unique_ptr<Obstacle>& obs) {
+                return obs->getY() > 650.f; 
+            }),
+        obstacles.end()
+    );
+
+    // 4. this has player progress and score
+    player->addScore(static_cast<int>(dt * 15));
+    scoreText.setString("Score: " + std::to_string(player->getCurrentScore()));
+
+    // 5. this is doing difficulty scaling
+    gameSpeed += 5.0f * dt;
 }
 
-void Game::detectCollisions() {
-    // We will implement the actual hitbox check here once we refine Obstacle.h
-}
 
-void Game::spawnObstacles() {
-    // Use game_Clock to decide when to push a new unique_ptr to the vector
-    if (game_Clock.getElapsedTime().asSeconds() > 1.5f) {
-        // obstacles.push_back(std::make_unique<Obstacle>(...));
-        game_Clock.restart();
+void gameEngine::handleCollisions() {
+    sf::FloatRect bikeBounds = bike->getBounds();
+
+    for (auto& obs : obstacles) {
+        
+        if (auto intersection = bikeBounds.findIntersection(obs->getBounds())) {
+            isGameOver = true;
+            
+            
+            std::string n = player->getName();
+            float t = static_cast<float>(gameClock.getElapsedTime().asSeconds());
+            float s = static_cast<float>(gameSpeed);
+            int c = player->getCoins(); 
+
+           
+            Score finalScore(n, t, s, c);
+            
+           
+            leaderboard.add(finalScore);
+            std::cout << "Crash! Final Score: " << finalScore.getScore() << " | Coins: " << c << std::endl;
+            
+            break; 
+        }
     }
 }
 
-void Game::cleanupObstacles() {
-    // Remove obstacles that have moved off the bottom of the screen
-    // This prevents memory bloat!
+void gameEngine::spawnObstacles() {
+    int randomType = rand() % 4; // Generates 0, 1, 2, or 3
+
+    if (randomType == 0) {
+        obstacles.push_back(std::make_unique<CarObstacle>());
+    } else if (randomType == 1) {
+        obstacles.push_back(std::make_unique<RockObstacle>());
+    } else if (randomType == 2) {
+        obstacles.push_back(std::make_unique<BarrierObstacle>());
+    } else {
+        obstacles.push_back(std::make_unique<TwoLaneBlocker>());
+    }
 }
 
-void Game::render() {
-    // Using a soft "Lavender/Dark Gray" for a more feminine, sophisticated feel
-    window.clear(sf::Color(45, 40, 50)); 
+void gameEngine::render() {
+    window.clear(sf::Color(135, 206, 235)); //  Sky Blue 
 
-    // Draw everything in order: Background -> Obstacles -> Player -> UI
     for (auto& obs : obstacles) {
         obs->draw(window);
     }
 
-    // myPlayer.draw(window);
+    bike->draw(window);
     window.draw(scoreText);
+
+    if (isGameOver) {
+        leaderboard.drawOnWindow(window, font); // this has leaderboard.cpp logic
+    }
 
     window.display();
 }
-
-void Game::updateUI() {
-    scoreText.setString("Score: " + std::to_string(score));
-}
-    
-/*
-Alishba's score used in engine, just a templete for ref for mahnoor
-Score s(player.getName(), survivalTime, gameSpeed);
-
-if (leaderboard.isHighest(s))
-    // show "NEW HIGH SCORE!" 
-
-leaderboard.add(s);
-leaderboard.drawOnWindow(window, font);
-*/

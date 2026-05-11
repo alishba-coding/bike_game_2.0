@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include<algorithm>
 
 
 #include "bike.h"
@@ -14,7 +15,7 @@
 #include "score.h"
 #include "background.h"
 
-class GameEngine {
+class gameEngine {
 private:
     // Core Window and State
     sf::RenderWindow window;
@@ -45,7 +46,7 @@ private:
 
 public:
     
-    GameEngine(std::string name);//constructor will take player name as input
+    gameEngine(std::string name);//constructor will take player name as input
     void run();//THIS IS THE ENTRY POINT OF THE GAME 
     
     
