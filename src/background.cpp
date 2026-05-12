@@ -32,23 +32,6 @@ Background::Background() : sky(), hills(), road(),
     roadSprite.setTextureRect(sf::IntRect({0, 0}, {400, 600}));
 } // setTextureRect(sf::IntRect(left, top, width, height))Place/draw the texture over an area of width 800 and height 200.”
 
-/*void Background::update(float dt, float bikeSpeed)
-{
-    roadposition += bikeSpeed * dt;         // road will move with same speed as bike
-    hillsposition += bikeSpeed * 0.2f * dt; // The hills move at 20% of the bike's speed
-
-    // else will inctement forwever
-    if (roadposition >= static_cast<float>(road.getSize().y))
-        roadposition -= static_cast<float>(road.getSize().y);
-
-    if (hillsposition >= static_cast<float>(hills.getSize().y))
-        hillsposition -= static_cast<float>(hills.getSize().y);
-roadSprite.setTextureRect(
-    sf::IntRect({0, -(int)roadposition}, {400, 600})
-);// sky is stationary as it is really far away
-    leftHillsSprite.setTextureRect(sf::IntRect({0, (int)hillsposition}, {200, 600}));
-    rightHillsSprite.setTextureRect(sf::IntRect({0, (int)hillsposition}, {200, 600}));
-}*/
 void Background::update(float dt, float bikeSpeed)
 {
     roadposition += bikeSpeed * dt;
