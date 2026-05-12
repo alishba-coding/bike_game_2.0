@@ -240,7 +240,7 @@ void gameEngine::drawGameOver() {
 
     // Restart prompt
     sf::Text restartText(font);
-    restartText.setString("Press R to Restart   |   Esc to Quit");
+    restartText.setString("Press ENTER to Restart   |   Esc to Quit");
     restartText.setCharacterSize(22);
     restartText.setFillColor(sf::Color::White);
     restartText.setPosition({200.f, 530.f});
