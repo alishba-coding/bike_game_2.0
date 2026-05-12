@@ -91,11 +91,11 @@ void gameEngine::update(float dt) {
         obs->update(gameSpeed * dt);
     }
 
-    // 4. Cleanup Logic (Remove obstacles that passed the bottom)
+    // 4. Cleanup Logic 
     obstacles.erase(
         std::remove_if(obstacles.begin(), obstacles.end(),
             [](const std::unique_ptr<Obstacle>& obs) {
-                return obs->getY() > 650.f; // Use your actual window height
+                return obs->getY() > 650.f; 
             }),
         obstacles.end()
     );
@@ -215,7 +215,7 @@ void gameEngine::drawHealthBar() {
 void gameEngine::drawGameOver() {
     // Semi-transparent dark overlay
     sf::RectangleShape overlay({800.f, 600.f});
-    overlay.setFillColor(sf::Color(0, 0, 0, 170));  // black, 170/255 opacity
+    overlay.setFillColor(sf::Color(0, 0, 0, 170));  // black
     overlay.setPosition({0.f, 0.f});
     window.draw(overlay);
 
